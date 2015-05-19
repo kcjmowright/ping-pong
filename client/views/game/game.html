@@ -1,0 +1,94 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-3">
+      <ul class="nav nav-pills nav-stacked">
+        <li ng-repeat="game in vm.games"
+            ng-class="{'active': vm.selected(game)}">
+          <a href="#" ng-click="vm.edit(game._id)">
+            <span ng-repeat="playerId in game.home">
+              {{ vm.playerById(playerId).name }}
+            </span>
+            vs.
+            <span ng-repeat="playerId in game.visitor">
+              {{ vm.playerById(playerId).name }}
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-xs-9">
+      <form name="gameForm" ng-submit="vm.save()">
+        <div class="form-group">
+          <label>Start Date</label>
+          <span ng-if="!!vm.game.endDate">{{ vm.game.startDate | date: 'MMM d, y h:mm:ss a'}}</span>
+          <div class="dropdown" ng-if="!vm.game.endDate">
+            <a class="dropdown-toggle my-toggle-select"
+               id="dLabel"
+               role="button"
+               data-toggle="dropdown"
+               data-target="#"
+               href="">
+              <div class="btn-group">
+                <button class="btn btn-default">{{ vm.game.startDate | date: 'MMM d, y h:mm:ss a' }}</button>
+                <button class="btn btn-default"><span class="glyphicon glyphicon-calendar"></span></button>
+              </div>
+            </a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+              <datetimepicker data-ng-model="vm.game.startDate"
+                              data-datetimepicker-config="{ dropdownSelector: '.my-toggle-select' }"></datetimepicker>
+            </ul>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>End Date</label>
+          <span ng-if="!!vm.game.endDate">{{ vm.game.endDate | date: 'MMM d, y h:mm:ss a'}}</span>
+        </div>
+        <div class="form-group">
+          <label for="home">Home</label>
+          <select
+            id="home"
+            required
+            class="form-control"
+            name="home"
+            multiple="true"
+            ng-options="player._id as player.name for player in vm.players"
+            ng-model="vm.game.home"></select>
+        </div>
+        <div class="form-group">
+          <label for="homeScore">Home Score</label>
+          <input
+            id="homeScore"
+            class="form-control"
+            name="homeScore"
+            readonly
+            ng-model="vm.game.homeScore" />
+        </div>
+        <div class="form-group">
+          <label for="visitor">Visitor</label>
+          <select
+            id="visitor"
+            required
+            class="form-control"
+            name="visitor"
+            multiple="true"
+            ng-options="player._id as player.name for player in vm.players"
+            ng-model="vm.game.visitor"></select>
+        </div>
+        <div class="form-group">
+          <label for="visitorScore">Visitor Score</label>
+          <input
+            id="visitorScore"
+            class="form-control"
+            name="visitorScore"
+            readonly
+            ng-model="vm.game.visitorScore" />
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary" ng-disabled="gameForm.$invalid">Save</button>
+          <button type="button" class="btn btn-primary" ng-click="vm.reset()">Reset</button>
+          <button type="button" class="btn btn-danger" ng-click="vm.confirm()" ng-disabled="">Delete</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

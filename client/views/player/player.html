@@ -1,0 +1,46 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-3">
+      <ul class="nav nav-pills nav-stacked">
+        <li ng-repeat="player in vm.players"
+            ng-class="{'active': vm.selected(player)}">
+          <a href="#" ng-click="vm.edit(player._id)">{{player.name}}</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-xs-9">
+      <form name="playerForm" ng-submit="vm.save()" novalidate>
+        <div class="form-group">
+          <label for="rfid">RFID</label>
+          <input id="rfid" name="rfid" ng-model="vm.player.rfid" class="form-control" ng-disabled="vm.disabled()" required />
+        </div>
+        <div class="form-group">
+          <label for="name">User Name</label>
+          <input id="name" name="name" ng-model="vm.player.name" class="form-control" ng-disabled="vm.disabled()" required />
+        </div>
+        <div class="form-group" ng-if="!vm.disabled()">
+          <label for="hash">Password</label>
+          <input id="hash" name="hash" ng-model="vm.player.hash" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input id="firstName" name="firstName" ng-model="vm.player.firstName" class="form-control" ng-disabled="vm.disabled()" required />
+        </div>
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input id="lastName" name="lastName" ng-model="vm.player.lastName" class="form-control" ng-disabled="vm.disabled()" required />
+        </div>
+        <div class="form-group" ng-if="!vm.players.length || vm.authenticated.admin ">
+          <label for="admin">Admin</label>
+          <input id="admin" name="admin" ng-model="vm.player.admin" class="form-control" type="checkbox" />
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary" ng-disabled="vm.disabled() || playerForm.$invalid">Save</button>
+          <button type="button" class="btn btn-primary" ng-click="vm.reset()">Reset</button>
+          <button type="button" class="btn btn-danger" ng-click="vm.confirm()" ng-disabled="vm.disabled() || !vm.player._id">Delete</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>
