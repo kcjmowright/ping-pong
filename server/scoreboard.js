@@ -1,7 +1,6 @@
 'use strict';
 
-var TOKEN = 'a6b7adbdb7938cf059bdf7fe808ed02206198bc7';
-
+var config = require('./config/environment');
 var spark = require('spark');
 var _ = require('lodash');
 var moment = require('moment');
@@ -18,6 +17,7 @@ var updateGame = function(scoreboard){
       }
       if(games && games.length){
         var game = games[0];
+        console.log('[%s]: found game: %s', new Date(), JSON.stringify(game));
         game.homeScore = scoreboard.scoreA;
         game.visitorScore = scoreboard.scoreB;   
         if(scoreboard.gameOver){
@@ -30,7 +30,7 @@ var updateGame = function(scoreboard){
 
 console.log('[%s]: Logging on to particle', new Date());
 spark.login({
-  accessToken: TOKEN
+  accessToken: config.scoreboard.token
 }).then(
   function(token){
     console.log('[%s]: scoreboard initialized: ', new Date());
@@ -46,7 +46,7 @@ spark.login({
     spark.getEventStream(false, 'mine', function(event) {
       if(event.name === 'score'){
         var scoreboard = JSON.parse(event.data);
-        //console.log('[%s]: event: %s ', new Date(), JSON.stringify(scoreboard));
+        console.log('[%s]: event: %s ', new Date(), JSON.stringify(scoreboard));
         updateGame(scoreboard);
       } else {
         console.log('[%s]: scoreboard %s %s', new Date(), event.name, event.data);

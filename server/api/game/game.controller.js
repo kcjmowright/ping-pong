@@ -17,12 +17,25 @@ function handleError (res, err) {
  */
 exports.index = function (req, res) {
   var query = Game.find();
-  if(req.params.startDate){
-    query.where('startDate').lte(moment(req.params.startDate).toDate());
+  
+  if(req.query.startDate){
+    if(_.isArray(req.query.startDate)){
+      query.where('startDate').gte(moment(req.query.startDate[0]).toDate());
+      query.where('startDate').lte(moment(req.query.startDate[1]).toDate());
+    } else {
+      query.where('startDate').equals(moment(req.query.startDate).toDate());
+    }
   }
-  if(req.params.endDate){
-    query.where('endDate').gte(moment(req.params.endDate).toDate());
+
+  if(req.query.endDate){
+    if(_.isArray(req.query.endDate)){
+      query.where('endDate').gte(moment(req.query.endDate[0]).toDate());
+      query.where('endDate').lte(moment(req.query.endDate[1]).toDate());
+    } else {
+      query.where('endDate').equals(moment(req.query.endDate).toDate());
+    }
   }
+  
   query.exec(function (err, games) {
     if (err) {
       return handleError(res, err);

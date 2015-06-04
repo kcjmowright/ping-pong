@@ -52,8 +52,11 @@ angular.module('pingpong')
       gamesEarlierToday: [],
       gamesLaterToday: [],
       gamesAfterToday: [],
-      games: Game.query({},{
-        startDate: moment({ hour: 0 }).toDate()
+      games: Game.query({
+        startDate: [
+          moment({ hour: 0 }).toDate(),
+          moment({ hour: 0, day: 7 }).toDate()
+        ]
       }, handleGames, handleGamesError),
       playerMap: {},
       players: Player.query({}, handlePlayers),
