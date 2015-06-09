@@ -154,7 +154,7 @@ Libraries and hardware to control the Particle Core scoreboard.
     npm install spark --save
     
     # Install CLI
-    npm install particle-cli
+    npm install particle-cli -g
     
     # (Optional) To install client javascript
     bower install spark
@@ -174,6 +174,32 @@ Setting up scoreboard
 ```    
     
 * Flash the Core by entering the code pingpongscorekeeper.ino into Particles web based IDE at https://build.particle.io and clicking the Flash button.
+
+* Setup a token and update /server/config/environment/*.js with the token value.
+ 
+```
+    $ particle token
+    NAME:
+    particle token
+    
+    DOES: 
+        tools to manage access tokens (require username/password)
+    
+        particle token list   - List all access tokens for your account
+        particle token revoke - Revoke an access token
+        particle token new    - Create a new access token
+    
+    
+    $ particle token list
+    
+    ...
+    
+    $ particle token new
+    ? Please re-enter your password: ************
+    New access token expires on Sun June 06 2015 07:12:38 GMT-0500 (CDT)
+        e69045b231eb84e230c24d18e68100296dcab03a
+```
+
 
 ### Tessel
 

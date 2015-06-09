@@ -8,6 +8,7 @@ var Game = require('./api/game/game.model');
 
 var updateGame = function(scoreboard){
   Game.find()
+    .where('startDate').gte(moment({hour: 0}).toDate())
     .where('startDate').lte(moment().toDate())
     .where('endDate').equals(null)
     .exec(function (err, games) {
@@ -36,7 +37,7 @@ spark.login({
     console.log('[%s]: scoreboard initialized: ', new Date());
     
     spark.listDevices(function(err, devices) {
-      if(devices && devices.length){
+      if (devices && devices.length) {
         var device = devices[0];
         console.log('[%s]: Device name: %s', new Date(), device.name);
         console.log('[%s]: - connected?: ', new Date(), device.connected);
@@ -44,12 +45,15 @@ spark.login({
     });
     
     spark.getEventStream(false, 'mine', function(event) {
-      if(event.name === 'score'){
-        var scoreboard = JSON.parse(event.data);
-        console.log('[%s]: event: %s ', new Date(), JSON.stringify(scoreboard));
-        updateGame(scoreboard);
-      } else {
-        console.log('[%s]: scoreboard %s %s', new Date(), event.name, event.data);
+      if (event) {
+        console.log(event);
+        if (event.name === 'score') {
+          var scoreboard = JSON.parse(event.data);
+          console.log('[%s]: event: %s ', new Date(), JSON.stringify(scoreboard));
+          updateGame(scoreboard);
+        } else {
+          console.log('[%s]: scoreboard %s %s', new Date(), event.name, event.data);
+        }
       }
     });
     

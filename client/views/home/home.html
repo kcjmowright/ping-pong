@@ -4,7 +4,7 @@
     <div class="col-xs-12 col-lg-6">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Current Game</h3>
+          <h1 class="panel-title">Current Game</h1>
         </div>
         <div class="panel-body">      
           <div ng-if="!!vm.currentGame">
@@ -12,13 +12,13 @@
               <tbody>
                 <tr>
                   <td>
-                    <div ng-repeat="playerId in vm.currentGame.home">{{ vm.playerById(playerId).name }}</div>
-                    <div>{{ vm.currentGame.homeScore }}</div>
+                    <div ng-repeat="playerId in vm.currentGame.home"><h2>{{ vm.playerById(playerId).name }}</h2></div>
+                    <div><h2>{{ vm.currentGame.homeScore }}</h2></div>
                   </td>
                   <td>&nbsp;&nbsp;&nbsp;</td>
                   <td>
-                    <div ng-repeat="playerId in vm.currentGame.visitor">{{ vm.playerById(playerId).name }}</div>
-                    <div>{{ vm.currentGame.visitorScore }}</div>
+                    <div ng-repeat="playerId in vm.currentGame.visitor"><h2>{{ vm.playerById(playerId).name }}</h2></div>
+                    <div><h2>{{ vm.currentGame.visitorScore }}</h2></div>
                   </td>
                 </tr>
               </tbody>

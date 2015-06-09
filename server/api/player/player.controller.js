@@ -52,10 +52,10 @@ exports.show = function (req, res) {
  * @param res
  */
 exports.create = function (req, res) {
-  if(!req.session || !req.session.user){
+  if (!req.session || !req.session.user) {
     return res.status(401).end();
   }
-  if(!req.session.user.admin){
+  if (!req.session.user.admin) {
     req.body.admin = false;
   }
   Player.create(req.body, function (err, player) {
@@ -73,7 +73,7 @@ exports.create = function (req, res) {
  * @param res
  */
 exports.update = function (req, res) {
-  if(!req.session || !req.session.user){
+  if(!req.session || !req.session.user) {
     return res.status(401).end();
   }
   if (req.body._id) {
@@ -86,8 +86,8 @@ exports.update = function (req, res) {
     if (!player) {
       return res.status(404).end();
     }
-    if(!req.session.user.admin){
-      if(req.session.user._id !== req.body._id){
+    if (!req.session.user.admin) {
+      if (req.session.user._id !== req.body._id) {
         return res.status(403).end();
       }
       req.body.admin = false;
@@ -109,10 +109,10 @@ exports.update = function (req, res) {
  * @param res
  */
 exports.destroy = function (req, res) {
-  if(!req.session || !req.session.user){
+  if (!req.session || !req.session.user) {
     return res.status(401).end();
   }
-  if(!req.session.user.admin){
+  if (!req.session.user.admin) {
     return res.status(403).end();
   }
   Player.findById(req.params.id, function (err, player) {
@@ -131,12 +131,12 @@ exports.destroy = function (req, res) {
   });
 };
 
-exports.authenticate = function(req, res){
-  if(req.session && req.session.user){
+exports.authenticate = function(req, res) {
+  if (req.session && req.session.user) {
     return res.status(200).json(req.session.user);
   }
   var credentials = req.body;
-  if(!credentials || !credentials.username || !credentials.password){
+  if (!credentials || !credentials.username || !credentials.password) {
     return handleError(res, new Error('invalid credentials'));
   }
   Player.findOne ({name: credentials.username}, function(err, player) {
@@ -144,7 +144,7 @@ exports.authenticate = function(req, res){
       return handleError(res, new Error('invalid credentials'));
     }
     hash.hash(credentials.password, player.rfid, function(err, hash){
-      if (err){
+      if (err) {
         return handleError(res, err);
       }
       if (hash == player.hash) {
@@ -161,9 +161,9 @@ exports.authenticate = function(req, res){
 
 };
 
-exports.logout = function(req, res){
+exports.logout = function(req, res) {
   req.session.destroy(function(err) {
-    if(err){
+    if (err) {
       return handleError(res, new Error('invalid'));
     }
     return res.status(204).end();

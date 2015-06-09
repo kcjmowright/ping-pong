@@ -31,6 +31,7 @@ angular.module('pingpong')
      * @params games
      */
     function handleGames(games) {
+      //vm.games = games;
       Socket.syncModel('Game', vm.games);
       $scope.$watchCollection(function(){
         return vm.games;
@@ -55,7 +56,7 @@ angular.module('pingpong')
       games: Game.query({
         startDate: [
           moment({ hour: 0 }).toDate(),
-          moment({ hour: 0, day: 7 }).toDate()
+          moment({ hour: 0}).add(7, 'days').toDate()
         ]
       }, handleGames, handleGamesError),
       playerMap: {},
