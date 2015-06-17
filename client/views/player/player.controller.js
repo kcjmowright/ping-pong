@@ -28,7 +28,10 @@ angular.module('pingpong')
           admin: false
         };
       },
-      disabled: function(){
+      disabled: function () {
+        if (!vm.authenticated) {
+          return true;
+        }
         if(vm.authenticated.admin){
           return false;
         }

@@ -10,14 +10,24 @@ angular.module('pingpong', [
   'toaster',
   'ui.bootstrap',
   'ui.bootstrap.datetimepicker'
-])
-  .config(function ($routeProvider, $locationProvider) {
+]).config(function ($locationProvider, $routeProvider) {
 
-    $routeProvider
-      .otherwise({
-        redirectTo: '/'
-      });
+  $routeProvider
+    .otherwise({
+      redirectTo: '/'
+    });
 
-    $locationProvider.html5Mode(true);
+  $locationProvider.html5Mode(true);
 
+}).run(function ($location, $rootScope, authentication) {
+  
+  $rootScope.$on("$routeChangeStart", function (event, next, current) {
+    var authenticated = authentication.authenticated();
+    if ((authenticated === null || !authenticated.$resolved) && 
+      $location.path() !== '/' && $location.path() !== '/login') {
+      event.preventDefault();
+      $location.path('/');
+    }
   });
+  
+});
